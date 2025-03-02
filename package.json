@@ -1,0 +1,24 @@
+{
+  "name": "proxy-balancer",
+  "version": "0.0.1",
+  "description": "Balancer between proxies",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "repository": "https://github.com/gattacx/proxy-balancer",
+  "author": "Bogdan Voitenko",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "build": "tsc",
+    "start": "ts-node src/index.ts",
+    "prepublishOnly": "npm run build"
+  },
+  "files": [
+    "dist"
+  ],
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.2"
+  }
+}
