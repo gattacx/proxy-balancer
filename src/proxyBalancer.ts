@@ -28,4 +28,8 @@ export class ProxyBalancer {
       return await getNextProxy(this.enrichedProxiesList, this.options?.maxRPS);
     }
   }
+
+  public getState() {
+    return this.enrichedProxiesList;
+  }
 }

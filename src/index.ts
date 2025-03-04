@@ -5,6 +5,12 @@ const proxyBalancer = new ProxyBalancer(proxies);
 
 proxyBalancer.loadProxies().then((r) => console.log("finish load"));
 
-setTimeout(async () => {
-  await proxyBalancer.next().then((res) => console.log("new proxy", res));
+setTimeout(() => {
+  setInterval(async () => {
+    await proxyBalancer.next();
+  }, 50);
 }, 5000);
+
+setInterval(() => {
+  console.table(proxyBalancer.getState());
+}, 10000);

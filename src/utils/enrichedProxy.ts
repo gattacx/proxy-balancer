@@ -29,9 +29,9 @@ export async function enrichedProxies(
       if (responseTime) {
         return {
           ...proxy,
-          count: Math.floor(Math.random() * 5),
+          count: 0,
           responseTime,
-          rps: 6
+          rps: 0
         };
       }
     } catch (error) {
@@ -46,7 +46,6 @@ export async function enrichedProxies(
       enrichedProxiesList.push(result);
     }
   });
-
   console.table(enrichedProxiesList);
 
   return enrichedProxiesList;
@@ -60,7 +59,7 @@ function modifyProxyState(
   const proxyIdx = proxies.findIndex(
     (x) => `${x.host}:${x.port}` === `${proxy.host}:${proxy.port}`
   );
-  if (proxyIdx) {
+  if (proxyIdx >= 0) {
     proxies[proxyIdx].count++;
     proxies[proxyIdx].rps++;
     setTimeout(() => {
