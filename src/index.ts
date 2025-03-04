@@ -1,6 +1,8 @@
-import {ProxyBalancer} from "./proxyBalancer";
-import proxies from './proxies.json'
+import { ProxyBalancer } from "./proxyBalancer";
+import proxies from "./proxies.json";
 
-const proxyBalancer = new ProxyBalancer(proxies)
+const proxyBalancer = new ProxyBalancer(proxies);
 
-proxyBalancer.loadProxies().then(r => console.log('finish load'))
+proxyBalancer.loadProxies().then((r) => console.log("finish load"));
+
+// proxyBalancer.next()
