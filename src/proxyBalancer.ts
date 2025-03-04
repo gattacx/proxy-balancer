@@ -1,14 +1,14 @@
-import { EnrichedProxy, Proxies, ProxyOptions } from "./types";
-import { enrichedProxies } from "./utils/enrichedProxy";
+import { EnrichedProxies, Proxies, ProxyOptions } from "./types";
+import { enrichedProxies, getNextProxy } from "./utils/enrichedProxy";
 
 export class ProxyBalancer {
   private readonly proxies: Proxies;
   private readonly options?: ProxyOptions;
-  private enrichedProxiesList: Map<string, EnrichedProxy>;
+  private enrichedProxiesList: EnrichedProxies;
   constructor(proxies: Proxies, options?: ProxyOptions) {
     this.proxies = proxies;
     this.options = options;
-    this.enrichedProxiesList = new Map();
+    this.enrichedProxiesList = [];
   }
 
   public async loadProxies(): Promise<void> {
@@ -21,9 +21,11 @@ export class ProxyBalancer {
     );
   }
 
-  public next() {
-    if (this.enrichedProxiesList.size > 0) {
-      console.log("try next");
+  public async next() {
+    if (this.enrichedProxiesList.length === 0) {
+      console.log("no enriched", this.enrichedProxiesList.length);
+    } else {
+      return await getNextProxy(this.enrichedProxiesList, this.options?.maxRPS);
     }
   }
 

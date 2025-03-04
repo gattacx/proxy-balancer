@@ -1,17 +1,18 @@
 export type Proxy = {
-  host: string;
-  port: number;
-  username?: string;
-  password?: string;
+  readonly host: string;
+  readonly port: number;
+  readonly username?: string;
+  readonly password?: string;
 };
 export type Proxies = Array<Proxy>;
+export type EnrichedProxies = Array<EnrichedProxy>;
 export interface ProxyOptions {
   timeout?: number;
+  maxRPS?: number;
 }
 
-export interface EnrichedProxy {
-  readonly proxy: Proxy;
+export interface EnrichedProxy extends Proxy {
   count: number;
-  responseTime: number;
   rps: number;
+  readonly responseTime: number;
 }

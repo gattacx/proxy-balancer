@@ -1,13 +1,18 @@
-import { EnrichedProxy, Proxies, ProxyOptions } from "../types";
+import {
+  EnrichedProxies,
+  EnrichedProxy,
+  Proxies,
+  ProxyOptions
+} from "../types";
 import { getProxyState, getProxyURL, isValidProxyFormat } from "./proxy";
 
 export async function enrichedProxies(
   proxies: Proxies,
   options?: ProxyOptions
-): Promise<Map<string, EnrichedProxy>> {
+): Promise<EnrichedProxies> {
   console.log("Start enriching proxies...");
   const timeout = options?.timeout ?? 3000;
-  const enrichedProxiesList = new Map<string, EnrichedProxy>();
+  const enrichedProxiesList: EnrichedProxies = [];
 
   const proxyCheckPromises = proxies.map(async (proxy, index) => {
     const checkValidURI = isValidProxyFormat(proxy);
@@ -23,8 +28,10 @@ export async function enrichedProxies(
       const responseTime = await getProxyState(proxy, timeout);
       if (responseTime) {
         return {
-          proxyURL,
-          enrichedProxy: { proxy, count: 0, responseTime, rps: 0 }
+          ...proxy,
+          count: Math.floor(Math.random() * 5),
+          responseTime,
+          rps: 6
         };
       }
     } catch (error) {
@@ -36,21 +43,27 @@ export async function enrichedProxies(
   const results = await Promise.all(proxyCheckPromises);
   results.forEach((result) => {
     if (result) {
-      enrichedProxiesList.set(result.proxyURL, result.enrichedProxy);
+      enrichedProxiesList.push(result);
     }
   });
 
-  tableEnrichedProxies(enrichedProxiesList);
+  console.table(enrichedProxiesList);
 
   return enrichedProxiesList;
 }
 
-export function tableEnrichedProxies(list: Map<string, EnrichedProxy>): void {
-  const enrichedProxiesArray = [...list.entries()].map(([_, value]) => ({
-    proxy: `${value.proxy.host}:${value.proxy.port}`,
-    count: value.count,
-    responseTime: `${value.responseTime}ms`
-  }));
+export async function getNextProxy(
+  proxies: EnrichedProxies,
+  maxRPS: number = 5
+): Promise<EnrichedProxy> {
+  const bestProxyByRPS = proxies.find((proxy) => proxy.rps < maxRPS);
 
-  console.table(enrichedProxiesArray);
+  if (bestProxyByRPS) {
+    const sortedProxies = proxies.sort((a, b) => a.count - b.count);
+    return sortedProxies[0];
+  } else {
+    console.log("Not found proxies by max RPS, try find after 1000 ms");
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    return await getNextProxy(proxies, maxRPS);
+  }
 }
