@@ -52,15 +52,39 @@ export async function enrichedProxies(
   return enrichedProxiesList;
 }
 
+// update selected proxy rps and count for calculated next proxy later
+function modifyProxyState(
+  proxies: EnrichedProxies,
+  proxy: EnrichedProxy
+): void {
+  const proxyIdx = proxies.findIndex(
+    (x) => `${x.host}:${x.port}` === `${proxy.host}:${proxy.port}`
+  );
+  if (proxyIdx) {
+    proxies[proxyIdx].count++;
+    proxies[proxyIdx].rps++;
+    setTimeout(() => {
+      proxies[proxyIdx].rps--;
+    }, 1000);
+  }
+}
+
+// find next proxy, if not found by rps, try after 1000 ms
 export async function getNextProxy(
   proxies: EnrichedProxies,
   maxRPS: number = 5
 ): Promise<EnrichedProxy> {
-  const bestProxyByRPS = proxies.find((proxy) => proxy.rps < maxRPS);
-
-  if (bestProxyByRPS) {
-    const sortedProxies = proxies.sort((a, b) => a.count - b.count);
-    return sortedProxies[0];
+  const validProxiesByRPS = proxies.filter((proxy) => proxy.rps < maxRPS);
+  if (validProxiesByRPS.length > 0) {
+    const bestProxy = validProxiesByRPS.sort((a, b) => {
+      if (a.count < b.count) return -1;
+      if (a.count > b.count) return 1;
+      if (a.rps < b.rps) return -1;
+      if (a.rps > b.rps) return 1;
+      return 0;
+    });
+    modifyProxyState(proxies, bestProxy[0]);
+    return bestProxy[0];
   } else {
     console.log("Not found proxies by max RPS, try find after 1000 ms");
     await new Promise((resolve) => setTimeout(resolve, 1000));
