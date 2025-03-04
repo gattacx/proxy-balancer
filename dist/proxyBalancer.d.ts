@@ -1,4 +1,4 @@
-import { EnrichedProxy, Proxies, ProxyOptions } from "./types";
+import type { EnrichedProxy, Proxies, ProxyOptions } from "./types";
 export declare class ProxyBalancer {
     private readonly proxies;
     private readonly options?;

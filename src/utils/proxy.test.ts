@@ -1,6 +1,4 @@
-import { getProxyURL } from "./proxy";
-import { isValidProxyFormat } from "./proxy";
-import { getProxyState } from "./proxy";
+import { getProxyURL, isValidProxyFormat, getProxyState } from "./proxy";
 import { Proxy } from "../types";
 import axios from "axios";
 

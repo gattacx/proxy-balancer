@@ -1,4 +1,4 @@
-import { Proxy } from "@/types";
+import { Proxy } from "../types";
 import axios from "axios";
 
 export function getProxyURL(proxy: Proxy) {

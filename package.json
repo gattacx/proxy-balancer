@@ -1,10 +1,9 @@
 {
   "name": "@voytenkodev/proxy-balancer",
-  "version": "0.0.4",
+  "version": "0.0.50",
   "type": "module",
   "description": "Balancer between proxies",
   "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "repository": "https://github.com/gattacx/proxy-balancer",
   "author": "Bogdan Voitenko",
@@ -13,7 +12,7 @@
   "scripts": {
     "test": "yarn jest",
     "prebuild": "yarn test",
-    "build": "tsc",
+    "build": "tsc && tsc-alias",
     "start": "nodemon exec"
   },
   "files": [
@@ -26,6 +25,7 @@
     "nodemon": "^3.1.9",
     "prettier": "^3.5.2",
     "ts-jest": "^29.2.6",
+    "tsc-alias": "^1.8.11",
     "tsx": "^4.19.3",
     "typescript": "^5.8.2"
   },
