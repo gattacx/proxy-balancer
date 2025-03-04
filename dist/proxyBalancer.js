@@ -1,4 +1,4 @@
-import { enrichedProxies, getNextProxy } from "./utils/enrichedProxy";
+import { enrichedProxies, getNextProxy } from './utils/enrichedProxy.js';
 export class ProxyBalancer {
     proxies;
     options;

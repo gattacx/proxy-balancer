@@ -1,1 +1,1 @@
-export { ProxyBalancer } from "./proxyBalancer";
+export { ProxyBalancer } from './proxyBalancer.js';

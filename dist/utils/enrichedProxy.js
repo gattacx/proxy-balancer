@@ -1,4 +1,4 @@
-import { getProxyState, getProxyURL, isValidProxyFormat } from "./proxy";
+import { getProxyState, getProxyURL, isValidProxyFormat } from './proxy.js';
 export async function enrichedProxies(proxies, options) {
     console.log("Start enriching proxies...");
     const timeout = options?.timeout ?? 3000;
