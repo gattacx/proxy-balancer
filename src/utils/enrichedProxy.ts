@@ -1,10 +1,12 @@
-import { EnrichedProxy, Proxies } from "../types";
+import { EnrichedProxy, Proxies, ProxyOptions } from "../types";
 import { getProxyState, getProxyURL, isValidProxyFormat } from "./proxy";
 
 export async function enrichedProxies(
-  proxies: Proxies
+  proxies: Proxies,
+  options?: ProxyOptions
 ): Promise<Map<string, EnrichedProxy>> {
   console.log("Start enriching proxies...");
+  const timeout = options?.timeout ?? 3000;
   const enrichedProxiesList = new Map<string, EnrichedProxy>();
 
   const proxyCheckPromises = proxies.map(async (proxy, index) => {
@@ -18,7 +20,7 @@ export async function enrichedProxies(
 
     const proxyURL = getProxyURL(proxy);
     try {
-      const responseTime = await getProxyState(proxy);
+      const responseTime = await getProxyState(proxy, timeout);
       if (responseTime) {
         return {
           proxyURL,

@@ -16,7 +16,10 @@ export function isValidProxyFormat(proxy: Proxy): boolean {
   return proxyPattern.test(proxyURL);
 }
 
-export async function getProxyState(proxy: Proxy): Promise<number | false> {
+export async function getProxyState(
+  proxy: Proxy,
+  timeout: number
+): Promise<number | false> {
   try {
     const startTime = Date.now();
     const { host, port, username, password } = proxy;
@@ -32,7 +35,7 @@ export async function getProxyState(proxy: Proxy): Promise<number | false> {
               }
             : undefined
       },
-      timeout: 3000
+      timeout: timeout
     });
 
     const responseTime: number = Date.now() - startTime;

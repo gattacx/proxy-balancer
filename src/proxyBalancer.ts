@@ -3,7 +3,7 @@ import { enrichedProxies } from "./utils/enrichedProxy";
 
 export class ProxyBalancer {
   private readonly proxies: Proxies;
-  private options?: ProxyOptions;
+  private readonly options?: ProxyOptions;
   private enrichedProxiesList: Map<string, EnrichedProxy>;
   constructor(proxies: Proxies, options?: ProxyOptions) {
     this.proxies = proxies;
@@ -15,12 +15,17 @@ export class ProxyBalancer {
     if (this.proxies?.length < 1) {
       throw new Error("There are no proxies for work");
     }
-    this.enrichedProxiesList = await enrichedProxies(this.proxies);
+    this.enrichedProxiesList = await enrichedProxies(
+      this.proxies,
+      this.options
+    );
   }
 
-  // next() {
-  //
-  // }
+  public next() {
+    if (this.enrichedProxiesList.size > 0) {
+      console.log("try next");
+    }
+  }
 
   // updateProxy() {
   //
