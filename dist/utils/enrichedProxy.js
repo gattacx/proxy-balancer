@@ -1,4 +1,3 @@
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -8,24 +7,22 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.getNextProxy = exports.enrichedProxies = void 0;
-const proxy_1 = require("./proxy");
-function enrichedProxies(proxies, options) {
+import { getProxyState, getProxyURL, isValidProxyFormat } from "./proxy";
+export function enrichedProxies(proxies, options) {
     return __awaiter(this, void 0, void 0, function* () {
         var _a;
         console.log("Start enriching proxies...");
         const timeout = (_a = options === null || options === void 0 ? void 0 : options.timeout) !== null && _a !== void 0 ? _a : 3000;
         const enrichedProxiesList = [];
         const proxyCheckPromises = proxies.map((proxy, index) => __awaiter(this, void 0, void 0, function* () {
-            const checkValidURI = (0, proxy_1.isValidProxyFormat)(proxy);
+            const checkValidURI = isValidProxyFormat(proxy);
             if (!checkValidURI) {
                 console.log(`${index}. Proxy host: ${proxy.host}, port: ${proxy.port} is not valid ❌`);
                 return null;
             }
-            const proxyURL = (0, proxy_1.getProxyURL)(proxy);
+            const proxyURL = getProxyURL(proxy);
             try {
-                const responseTime = yield (0, proxy_1.getProxyState)(proxy, timeout);
+                const responseTime = yield getProxyState(proxy, timeout);
                 if (responseTime) {
                     return Object.assign(Object.assign({}, proxy), { count: 0, responseTime, rps: 0 });
                 }
@@ -45,7 +42,6 @@ function enrichedProxies(proxies, options) {
         return enrichedProxiesList;
     });
 }
-exports.enrichedProxies = enrichedProxies;
 // update selected proxy rps and count for calculated next proxy later
 function modifyProxyState(proxies, proxy) {
     const proxyIdx = proxies.findIndex((x) => `${x.host}:${x.port}` === `${proxy.host}:${proxy.port}`);
@@ -58,7 +54,7 @@ function modifyProxyState(proxies, proxy) {
     }
 }
 // find next proxy, if not found by rps, try after 1000 ms
-function getNextProxy(proxies_1) {
+export function getNextProxy(proxies_1) {
     return __awaiter(this, arguments, void 0, function* (proxies, maxRPS = 5) {
         const validProxiesByRPS = proxies.filter((proxy) => proxy.rps < maxRPS);
         if (validProxiesByRPS.length > 0) {
@@ -83,4 +79,3 @@ function getNextProxy(proxies_1) {
         }
     });
 }
-exports.getNextProxy = getNextProxy;

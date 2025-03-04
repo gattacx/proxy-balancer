@@ -1,4 +1,3 @@
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -8,18 +7,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.getProxyState = exports.isValidProxyFormat = exports.getProxyURL = void 0;
-const axios_1 = __importDefault(require("axios"));
-function getProxyURL(proxy) {
+import axios from "axios";
+export function getProxyURL(proxy) {
     const { host, port } = proxy;
     return `${host}:${port}`;
 }
-exports.getProxyURL = getProxyURL;
-function isValidProxyFormat(proxy) {
+export function isValidProxyFormat(proxy) {
     const { host, port } = proxy;
     if (!host || !port) {
         return false;
@@ -29,13 +22,12 @@ function isValidProxyFormat(proxy) {
     const proxyPattern = /^(\d{1,3}\.){3}\d{1,3}:\d{1,5}$/;
     return proxyPattern.test(proxyURL);
 }
-exports.isValidProxyFormat = isValidProxyFormat;
-function getProxyState(proxy, timeout) {
+export function getProxyState(proxy, timeout) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const startTime = Date.now();
             const { host, port, username, password } = proxy;
-            const response = yield axios_1.default.get("http://httpbin.org/ip", {
+            const response = yield axios.get("http://httpbin.org/ip", {
                 proxy: {
                     host: host,
                     port: port,
@@ -59,4 +51,3 @@ function getProxyState(proxy, timeout) {
         return false;
     });
 }
-exports.getProxyState = getProxyState;

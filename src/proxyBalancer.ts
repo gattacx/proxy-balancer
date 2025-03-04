@@ -1,5 +1,5 @@
 import { EnrichedProxies, EnrichedProxy, Proxies, ProxyOptions } from "./types";
-import { enrichedProxies, getNextProxy } from "./utils/enrichedProxy";
+import { enrichedProxies, getNextProxy } from "@/utils/enrichedProxy";
 
 export class ProxyBalancer {
   private readonly proxies: Proxies;
