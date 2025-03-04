@@ -12,12 +12,15 @@ ProxyBalancer is a lightweight TypeScript library designed to manage and distrib
 ## Installation
 
 ```bash
-npm install proxy-balancer
-
+  npm install @voytenkodev/proxy-balancer
+```
+or via yarn
+```bash
+  yarn add @voytenkodev/proxy-balancer
 ```
 ## Quick start
 ```bash
-import { ProxyBalancer } from 'proxy-balancer';
+import { ProxyBalancer } from '@voytenkodev/proxy-balancer';
 
 const proxies = [
   { host: '192.168.1.10', port: 8080 },

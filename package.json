@@ -1,5 +1,5 @@
 {
-  "name": "proxy-balancer",
+  "name": "@voytenkodev/proxy-balancer",
   "version": "0.0.2",
   "type": "module",
   "description": "Balancer between proxies",
