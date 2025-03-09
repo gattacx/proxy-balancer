@@ -1,4 +1,5 @@
 import type {
+  CustomValue,
   EnrichedProxies,
   EnrichedProxy,
   Proxies,
@@ -6,13 +7,14 @@ import type {
 } from "../types";
 import { getProxyState, getProxyURL, isValidProxyFormat } from "./proxy";
 
-export async function enrichedProxies(
+export async function enrichedProxies<T extends CustomValue<T> | undefined>(
   proxies: Proxies,
-  options?: ProxyOptions
-): Promise<EnrichedProxies> {
+  options?: ProxyOptions,
+  customValue?: CustomValue<T>
+): Promise<EnrichedProxies<T>> {
   console.log("Start enriching proxies...");
   const timeout = options?.timeout ?? 3000;
-  const enrichedProxiesList: EnrichedProxies = [];
+  const enrichedProxiesList: EnrichedProxies<T> = [];
 
   const proxyCheckPromises = proxies.map(async (proxy, index) => {
     const checkValidURI = isValidProxyFormat(proxy);
@@ -31,7 +33,8 @@ export async function enrichedProxies(
           ...proxy,
           count: 0,
           responseTime,
-          rps: 0
+          rps: 0,
+          customValue: customValue ? customValue(proxy) : undefined
         };
       }
     } catch (error) {
@@ -52,9 +55,9 @@ export async function enrichedProxies(
 }
 
 // update selected proxy rps and count for calculated next proxy later
-function modifyProxyState(
-  proxies: EnrichedProxies,
-  proxy: EnrichedProxy
+function modifyProxyState<T>(
+  proxies: EnrichedProxies<T>,
+  proxy: EnrichedProxy<T>
 ): void {
   const proxyIdx = proxies.findIndex(
     (x) => `${x.host}:${x.port}` === `${proxy.host}:${proxy.port}`
@@ -69,10 +72,10 @@ function modifyProxyState(
 }
 
 // find next proxy, if not found by rps, try after 1000 ms
-export async function getNextProxy(
-  proxies: EnrichedProxies,
+export async function getNextProxy<T>(
+  proxies: EnrichedProxies<T>,
   maxRPS: number = 5
-): Promise<EnrichedProxy> {
+): Promise<EnrichedProxy<T>> {
   const validProxiesByRPS = proxies.filter((proxy) => proxy.rps < maxRPS);
   if (validProxiesByRPS.length > 0) {
     const bestProxy = validProxiesByRPS.sort((a, b) => {

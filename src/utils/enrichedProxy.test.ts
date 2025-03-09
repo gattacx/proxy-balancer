@@ -27,9 +27,9 @@ describe("enrichedProxies", () => {
   });
 });
 
-describe("getNextProxy", () => {
+describe("getNextProxy", <T>() => {
   it("selects proxy with lowest count and rps", async () => {
-    const proxies: EnrichedProxies = [
+    const proxies: EnrichedProxies<T> = [
       { host: "proxy1", port: 8080, count: 2, responseTime: 100, rps: 1 },
       { host: "proxy2", port: 8081, count: 1, responseTime: 200, rps: 0 }
     ];
@@ -37,11 +37,11 @@ describe("getNextProxy", () => {
     expect(result).toEqual(proxies[1]);
   });
 
-  it("retries when no valid proxy is found", async () => {
+  it("retries when no valid proxy is found", async <T>() => {
     jest.useFakeTimers();
 
     const setTimeoutSpy = jest.spyOn(global, "setTimeout");
-    const proxies: EnrichedProxies = [
+    const proxies: EnrichedProxies<T> = [
       { host: "proxy1", port: 8080, count: 2, responseTime: 100, rps: 4 }
     ];
     const getNextProxyPromise = getNextProxy(proxies, 5);

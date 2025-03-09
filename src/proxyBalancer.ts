@@ -1,4 +1,5 @@
 import type {
+  CustomValue,
   EnrichedProxies,
   EnrichedProxy,
   Proxies,
@@ -6,27 +7,28 @@ import type {
 } from "./types";
 import { enrichedProxies, getNextProxy } from "./utils/enrichedProxy";
 
-export class ProxyBalancer {
+export class ProxyBalancer<T extends CustomValue<T> | undefined> {
   private readonly proxies: Proxies;
   private readonly options?: ProxyOptions;
-  private enrichedProxiesList: EnrichedProxies;
+  private enrichedProxiesList: EnrichedProxies<T>;
   constructor(proxies: Proxies, options?: ProxyOptions) {
     this.proxies = proxies;
     this.options = options;
     this.enrichedProxiesList = [];
   }
 
-  public async loadProxies(): Promise<void> {
+  public async loadProxies(customValue?: T): Promise<void> {
     if (this.proxies?.length < 1) {
       throw new Error("There are no proxies for work");
     }
     this.enrichedProxiesList = await enrichedProxies(
       this.proxies,
-      this.options
+      this.options,
+      customValue
     );
   }
 
-  public async next(): Promise<EnrichedProxy | undefined> {
+  public async next(): Promise<EnrichedProxy<T> | undefined> {
     if (this.enrichedProxiesList.length === 0) {
       console.log("no enriched", this.enrichedProxiesList.length);
     } else {

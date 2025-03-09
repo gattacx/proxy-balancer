@@ -27,12 +27,15 @@ const proxies = [
   { host: '10.0.0.5', port: 3128, username: 'admin', password: 'secret' },
 ];
 
-const balancer = new ProxyBalancer(proxies, { timeout: 4000, maxRPS: 5 });
+// Optional: Define a custom value function
+const customValue = (proxy) => `Proxy-${proxy.host}`;
+
+const balancer = new ProxyBalancer<string>(proxies, { timeout: 4000, maxRPS: 5 });
 
 async function run() {
-  await balancer.loadProxies(); // Initialize and validate proxies
+  await balancer.loadProxies(customValue); // Initialize with custom values
   const proxy = await balancer.next(); // Get the best available proxy
-  console.log('Selected proxy:', proxy);
+  console.log('Selected proxy:', proxy); // Includes customValue
   balancer.getState(); // Display proxy stats
 }
 
@@ -49,10 +52,13 @@ run().catch(console.error);
 - **`options`** (optional):
     - `timeout`: number (default: 3000) - Timeout for proxy checks in milliseconds
     - `maxRPS`: number (default: 5) - Maximum requests per second per proxy
+- **`customValue`** (optional): (proxy: Proxy) => T - Function to generate custom data for each proxy, where T is a generic type.
+
+
 
 ## Methods
 
-- **`loadProxies()`**: Validates and prepares proxies for use.
+- **`loadProxies(customValue?: T)`**: Validates and prepares proxies for use, optionally attaching custom data to each proxy.
 - **`next()`**: Returns the next available proxy based on RPS and usage.
 - **`getState()`**: Logs a table of current proxy stats.
 
