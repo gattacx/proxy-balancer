@@ -4,7 +4,7 @@ All notable changes to `@voytenkodev/proxy-balancer` will be documented in this 
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.1.1] - 2025-03-10
+## [0.1.3] - 2025-03-10
 
 ### Added
 - **Field in enriched proxy**: Added new field url. returned full url:
@@ -14,7 +14,6 @@ username:password@host:port or host:port if username and password not found
 ## [0.1.0] - 2025-03-09
 
 ### Added
-- **Generic Type Support**: Added support for generics in `ProxyBalancer`, allowing users to attach custom data to proxies via the `customValue` parameter.
 - **Custom Value Functionality**: Introduced an optional `customValue` parameter in the `loadProxies` method. This accepts a function `(proxy: Proxy) => T` to generate custom data for each proxy, enhancing flexibility for advanced use cases (e.g., attaching metadata like IDs or priorities).
 - Updated documentation to reflect the new generic support and `customValue` feature.
 

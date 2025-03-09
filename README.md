@@ -30,7 +30,7 @@ const proxies = [
 // Optional: Define a custom value function
 const customValue = (proxy) => `Proxy-${proxy.host}`;
 
-const balancer = new ProxyBalancer<string>(proxies, { timeout: 4000, maxRPS: 5 });
+const balancer = new ProxyBalancer(proxies, { timeout: 4000, maxRPS: 5 });
 
 async function run() {
   await balancer.loadProxies(customValue); // Initialize with custom values

@@ -7,17 +7,17 @@ import type {
 } from "./types";
 import { enrichedProxies, getNextProxy } from "./utils/enrichedProxy";
 
-export class ProxyBalancer<T extends CustomValue<T> | undefined> {
+export class ProxyBalancer {
   private readonly proxies: Proxies;
   private readonly options?: ProxyOptions;
-  private enrichedProxiesList: EnrichedProxies<T>;
+  private enrichedProxiesList: EnrichedProxies<unknown>;
   constructor(proxies: Proxies, options?: ProxyOptions) {
     this.proxies = proxies;
     this.options = options;
     this.enrichedProxiesList = [];
   }
 
-  public async loadProxies(customValue?: T): Promise<void> {
+  public async loadProxies(customValue?: CustomValue<unknown>): Promise<void> {
     if (this.proxies?.length < 1) {
       throw new Error("There are no proxies for work");
     }
@@ -28,7 +28,7 @@ export class ProxyBalancer<T extends CustomValue<T> | undefined> {
     );
   }
 
-  public async next(): Promise<EnrichedProxy<T> | undefined> {
+  public async next(): Promise<EnrichedProxy<unknown> | undefined> {
     if (this.enrichedProxiesList.length === 0) {
       console.log("no enriched", this.enrichedProxiesList.length);
     } else {
