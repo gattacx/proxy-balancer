@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [Unreleased]
 - No unreleased changes yet.
 
-## [0.0.8] - 2025-03-09
+## [0.1.0] - 2025-03-09
 
 ### Added
 - **Generic Type Support**: Added support for generics in `ProxyBalancer`, allowing users to attach custom data to proxies via the `customValue` parameter.
