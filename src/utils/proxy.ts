@@ -2,15 +2,19 @@ import { Proxy } from "../types";
 import axios from "axios";
 
 export function getProxyURL(proxy: Proxy) {
-  const { host, port } = proxy;
-  return `${host}:${port}`;
+  const { host, port, username, password } = proxy;
+  let url = "";
+  if (username && password) {
+    url += `${username}:${password}@`;
+  }
+  return `${url}${host}:${port}`;
 }
 export function isValidProxyFormat(proxy: Proxy): boolean {
   const { host, port } = proxy;
   if (!host || !port) {
     return false;
   }
-  const proxyURL = getProxyURL(proxy);
+  const proxyURL = `${host}:${port}`;
   // Регулярное выражение для проверки формата ip:port
   const proxyPattern = /^(\d{1,3}\.){3}\d{1,3}:\d{1,5}$/;
   return proxyPattern.test(proxyURL);

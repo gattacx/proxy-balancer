@@ -7,10 +7,10 @@ import type {
 } from "../types";
 import { getProxyState, getProxyURL, isValidProxyFormat } from "./proxy";
 
-export async function enrichedProxies<T extends CustomValue<T> | undefined>(
+export async function enrichedProxies<T>(
   proxies: Proxies,
   options?: ProxyOptions,
-  customValue?: CustomValue<T>
+  customValue?: CustomValue<T> // Уточняем тип для customValue
 ): Promise<EnrichedProxies<T>> {
   console.log("Start enriching proxies...");
   const timeout = options?.timeout ?? 3000;
@@ -34,6 +34,7 @@ export async function enrichedProxies<T extends CustomValue<T> | undefined>(
           count: 0,
           responseTime,
           rps: 0,
+          url: proxyURL,
           customValue: customValue ? customValue(proxy) : undefined
         };
       }
@@ -53,7 +54,6 @@ export async function enrichedProxies<T extends CustomValue<T> | undefined>(
 
   return enrichedProxiesList;
 }
-
 // update selected proxy rps and count for calculated next proxy later
 function modifyProxyState<T>(
   proxies: EnrichedProxies<T>,

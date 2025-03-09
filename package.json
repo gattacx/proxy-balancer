@@ -1,6 +1,6 @@
 {
   "name": "@voytenkodev/proxy-balancer",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "description": "Balancer between proxies",
   "main": "./dist/index.js",

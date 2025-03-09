@@ -16,5 +16,6 @@ export interface EnrichedProxy<T> extends Proxy {
   count: number;
   rps: number;
   readonly responseTime: number;
-  customValue?: CustomValue<T>;
+  url: string;
+  customValue?: T;
 }
