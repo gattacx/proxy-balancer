@@ -12,7 +12,7 @@
   "scripts": {
     "test": "yarn jest",
     "prebuild": "yarn test",
-    "build": "tsc && node postbuild.js",
+    "build": "yarn tsc && node postbuild.js",
     "start": "nodemon exec"
   },
   "files": [
