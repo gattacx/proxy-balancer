@@ -28,6 +28,14 @@ export class ProxyBalancer {
     );
   }
 
+  public getAllProxies() {
+    if (this.enrichedProxiesList.length === 0) {
+      console.log("no enriched", this.enrichedProxiesList.length);
+    } else {
+      return this.enrichedProxiesList;
+    }
+  }
+
   public async next(): Promise<EnrichedProxy<unknown> | undefined> {
     if (this.enrichedProxiesList.length === 0) {
       console.log("no enriched", this.enrichedProxiesList.length);
