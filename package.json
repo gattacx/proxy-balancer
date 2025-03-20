@@ -1,11 +1,11 @@
 {
   "name": "@voytenkodev/proxy-balancer",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "type": "module",
   "description": "Balancer between proxies",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "repository": "https://github.com/gattacx/proxy-balancer",
+  "repository": "https://github.com/fexlure/proxy-balancer",
   "author": "Bogdan Voitenko",
   "license": "MIT",
   "private": false,
